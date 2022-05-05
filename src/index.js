@@ -1,3 +1,5 @@
-import { Button } from "./components/Button";
+import DragZone from './dragZone/dragZone';
 
-export {Button}
+export {
+    DragZone
+}
