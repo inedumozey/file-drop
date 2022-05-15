@@ -1,4 +1,4 @@
-import React, {useState, useRef } from 'react';
+import React, {useState, createRef, useCallback } from 'react';
 import './fileDrop.css'
 
 function FileDrop({
@@ -27,7 +27,10 @@ function FileDrop({
     invalidMemeTypeTxt= 'Accepted files are PNG, JPG JPEG',
     invalidFileSizeTxt= 'File Size must not be more than',
 }) {
-    const dragFileRef = useRef(null)
+    const dragFileRef = useCallback(()=>{
+        return createRef(null)
+    }, [])
+    
     const [ draggedIn, setDraggedIn ] = useState(false)
     const [ dropped, setDropped ] = useState(false)
     const [ validFile, setValidFile ] = useState(true)
@@ -354,4 +357,4 @@ function FileDrop({
     );
 }
 
-export {FileDrop}
+export default FileDrop;
