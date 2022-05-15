@@ -1,12 +1,12 @@
 import React, {useState, useRef } from 'react';
-import './dragZone.css'
+import './fileDrop.css'
 
-export default function DragZone({
-    getImage,
+export default function FileDrop({
+    getFile,
     fileSize=60,
     showInitialImage=false,
     initialImage='',
-    type='file',
+    getType='file',
 
     draggedInBg='rgb(52 201 136 / 42%)',
     defaultBg='rgba(138, 221, 185, 0.42)',
@@ -22,9 +22,8 @@ export default function DragZone({
 
     defaultTxt= 'Drag & Drop Your file here or Click to Upload',
     draggedInTxt= 'You Can Drop Now!',
-    invalidMemeTypeTxt= 'Accepted files are PNG, JPG or JPEG',
-    invalidFileSizeTxt= 'File Size must not be more than'
-    
+    invalidMemeTypeTxt= 'Accepted files are PNG, JPG JPEG, PDF, doc or docx',
+    invalidFileSizeTxt= 'File Size must not be more than',
 }) {
     const dragFileRef = useRef(null)
     const [ draggedIn, setDraggedIn ] = useState(false)
@@ -32,13 +31,15 @@ export default function DragZone({
     const [ validFile, setValidFile ] = useState(true)
     const [ dropMsg, setDropMsg ] = useState('')
     const [ fileURL, setFileURL ] = useState('')
+    const [ type, setType ] = useState('')
 
     //------------------------------------handle click to uplaod------------------------------------
     function handleClickToUpload(e){
 
         const memeType = e.target.files[0].type.split('/')[1];
-        
-        if(memeType === 'png' || memeType === 'jpg' || memeType === 'jpeg'){
+        setType(memeType);
+
+        if(memeType === 'png' || memeType === 'jpg' || memeType === 'jpeg' || memeType === 'pdf' || memeType === 'vnd.openxmlformats-officedocument.wordprocessingml.document' || memeType === 'msword'){
             const size = e.target.files[0].size / 1000;
             //fileSize is in kb
             if(size > fileSize){
@@ -57,24 +58,24 @@ export default function DragZone({
                 const url = URL.createObjectURL(file);
                 setFileURL(url);
 
-                if(type === 'base64'){
+                if(getType === 'base64'){
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload =function(){
                         const base64data = reader.result
-                        getImage(base64data);
+                        getFile(base64data);
                     }
-                }if(type === 'blob'){
-                    getImage(url)
+                }if(getType === 'blob'){
+                    getFile(url)
                 }else{
-                    getImage(file)
+                    getFile(file)
                 }
             }
         }else{
             setDropped(true);
             setValidFile(false)
             setDraggedIn(false)
-            setDropMsg('File must be PNG, JPG or JPEG')
+            setDropMsg(invalidMemeTypeTxt)
         }
     }
 
@@ -123,7 +124,8 @@ export default function DragZone({
 
         if(e.dataTransfer.files && e.dataTransfer.files.length > 0){
             const memeType = e.dataTransfer.files[0].type.split('/')[1];
-            if(memeType === 'png' || memeType === 'jpg' || memeType === 'jpeg'){
+            setType(memeType);
+            if(memeType === 'png' || memeType === 'jpg' || memeType === 'jpeg' || memeType === 'pdf' || memeType === 'vnd.openxmlformats-officedocument.wordprocessingml.document' || memeType === 'msword'){
                 const size = e.dataTransfer.files[0].size / 1000;
                 if(size > fileSize){
                     setDropped(true);
@@ -142,24 +144,24 @@ export default function DragZone({
                     const url = URL.createObjectURL(file)
                     setFileURL(url);
                     
-                    if(type === 'base64'){
+                    if(getType === 'base64'){
                         const reader = new FileReader();
                         reader.readAsDataURL(file);
                         reader.onload =function(){
                             const base64data = reader.result
-                            getImage(base64data);
+                            getFile(base64data);
                         }
-                    }if(type === 'blob'){
-                        getImage(url)
+                    }if(getType === 'blob'){
+                        getFile(url)
                     }else{
-                        getImage(file)
+                        getFile(file)
                     }
                 }
             }else{
                 setDropped(true);
                 setValidFile(false)
                 setDraggedIn(false)
-                setDropMsg(invalidMemeTypeTxt)
+                setDropMsg(invalidMemeTypeTxt);
             }
            
         }        
@@ -260,7 +262,7 @@ export default function DragZone({
                     }else{
                         return 'file';
                     }
-                }())} htmlFor="logo">
+                }())} htmlFor="file">
                     
                     {
                         (function(){
@@ -281,13 +283,30 @@ export default function DragZone({
                                                     height: '100%'
                                                 }}
                                             >
-                                                <img 
-                                                    style={{
-                                                        objectFit: 'contain',
-                                                        width: '100%',
-                                                        height: '100%'
-                                                    }}
-                                                    src={fileURL}/>
+                                                {
+                                                    (type === 'png' || type === 'jpg' || type === 'jpeg') ?
+                                                    (
+                                                        <img 
+                                                            style={{
+                                                                objectFit: 'contain',
+                                                                width: '100%',
+                                                                height: '100%',
+                                                            }}
+                                                            src={fileURL}
+                                                        />
+                                                    ):
+                                                    (
+                                                        <div
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                position: 'relative'
+                                                            }}
+                                                        >
+                                                            done!
+                                                        </div>
+                                                    )
+                                                }
                                             </div>
                                         </>
                                     );
@@ -318,13 +337,28 @@ export default function DragZone({
                                         (function(){
                                             if(showInitialImage){
                                                 return (
-                                                    <img 
-                                                        style={{
-                                                            objectFit: 'contain',
-                                                            filter: 'blur(2px)'
-                                                        }}
-                                                        src={initialImage} alt="" 
-                                                    />
+                                                    (type === 'png' || type === 'jpg' || type === 'jpeg') ?
+                                                    (
+                                                        <img 
+                                                            style={{
+                                                                objectFit: 'contain',
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                filter: 'blur(2px)'
+                                                            }}
+                                                            src={initialImage} alt="" 
+                                                        />
+                                                    ):
+                                                    (
+                                                        <iframe
+                                                            style={{
+                                                                width: '100%',
+                                                                height: '100%',
+                                                                filter: 'blur(2px)'
+                                                            }}
+                                                            src={initialImage}
+                                                        />
+                                                    )
                                                 )
                                             }
                                         }())
@@ -337,11 +371,45 @@ export default function DragZone({
                 <input
                     onChange={handleClickToUpload}
                     type="file"
-                    id='logo'
-                    accept='image/*'
-                    placeholder='Upload your company logo'
+                    id='file'
+                    placeholder='Upload your file'
                 />         
             </label>
         </div>
     );
 }
+
+
+{/* <div
+    style={{
+        width: '100%',
+        height: '100%',
+        position: 'relative'
+    }}
+>
+    
+    <label
+        htmlFor="file"
+        style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            positon: 'absolute',
+            background: 'red',
+            zIndex: 100,
+        }}
+    ></label>
+    <iframe
+        style={{
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            positon: 'absolute',
+            overflow: 'hidden',
+            userSelect: 'none',
+            top: 0,
+            left: 0
+        }}
+        src={fileURL}
+    />
+</div> */}

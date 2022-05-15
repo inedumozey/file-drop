@@ -5,8 +5,9 @@ module.exports = {
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
-        libraryTarget: 'umd',
+        libraryTarget: 'commonjs',
     },
+    externals: ['react'],
     module: {
         rules: [
             {

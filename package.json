@@ -1,26 +1,24 @@
 {
-  "name": "@mozeyinedu/dragzone",
-  "version": "1.0.0",
+  "name": "@mozeyinedu/file-drop",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
-  "module": "dist/index.js",
-  "source": "src/index.js",
   "scripts": {
     "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/inedumozey/dragzone.git"
+    "url": "https://github.com/inedumozey/file-drop.git"
   },
   "keywords": [
-    "drag-and-drop files uplaod mozeyinedu inedumozey mozey"
+    "drag-and-drop files uplaod mozeyinedu inedumozey mozey file-drop"
   ],
   "author": "mozeyinedu",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/inedumozey/dragzone/issues"
+    "url": "https://github.com/inedumozey/file-drop/issues"
   },
-  "homepage": "https://github.com/inedumozey/dragzone/issues",
+  "homepage": "https://github.com/inedumozey/file-drop/issues",
   "devDependencies": {
     "@babel/core": "^7.17.10",
     "@babel/preset-env": "^7.17.10",

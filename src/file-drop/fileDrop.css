@@ -1,9 +1,9 @@
-.dragZone .file{
+.fileDrop .file{
     width:100%;
     display: block;
     height: 100%;
     display: flex;
-    padding: 10px;
+    padding: 2px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -11,24 +11,24 @@
     cursor: pointer;
 }
 
-.dragZone .file input{
+.fileDrop .file input{
     width:0;
     height: 0;
     visibility: hidden;
 }
-.dragZone .file-img{
+.fileDrop .file-img{
     width: 80px;
     height: 80px;
     display: block;
     display: flex;
-    padding: 10px;
+    padding: 2px;
     text-align: center;
     justify-content: center;
     align-items: center;
     margin: auto;
     cursor: pointer;
 }
-.dragZone .file-img input{
+.fileDrop .file-img input{
     width:0;
     height: 0;
     visibility: hidden;

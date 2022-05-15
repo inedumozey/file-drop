@@ -1,5 +1,5 @@
-import DragZone from './dragZone/dragZone';
+import FileDrop from './file-drop/FileDrop';
 
 export {
-    DragZone
+    FileDrop
 }
